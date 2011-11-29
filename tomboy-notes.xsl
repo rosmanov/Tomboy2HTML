@@ -78,11 +78,12 @@ version='1.0'>
 </html>
 </xsl:template>
 
-<xsl:variable name="ignore-chars"><![CDATA[&#x1F;]]></xsl:variable>
+<!--<xsl:variable name="ignore-chars"><![CDATA["&#x1F;"]]></xsl:variable>-->
 
 
 <xsl:template match="text()">
-   <xsl:value-of select="translate(., $ignore-chars, '')"/>
+   <!--<xsl:value-of select="translate(., $ignore-chars, '')"/>-->
+   <xsl:value-of select="."/>
 </xsl:template>
 
 <xsl:template match="child::tomboy:text">
