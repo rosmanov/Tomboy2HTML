@@ -24,7 +24,13 @@
 # @date 08.02.2011
 # @details xsltproc utility required
 # @copyright Copyright (C) 2011 - Ruslan Osmanov
-import dbus, gobject, dbus.glib
+
+import dbus, dbus.glib
+try:
+    import gobject
+except ImportError:
+    # gobject functions are moved to dbus.glib in this Python version
+    pass
 import os, sys, getopt
 import re
 
