@@ -20,10 +20,10 @@
 # @file tomboy2html.py
 # @brief Export all Tomboy notes in XHTML/HTML file(s)
 # @author Ruslan Osmanov
-# @version 1.2
+# @version 1.3
 # @date 08.02.2011
 # @details xsltproc utility required
-# @copyright Copyright (C) 2011 - Ruslan Osmanov
+# @copyright Copyright (C) 2011-2012 Ruslan Osmanov <rrosmanov at gmail dot com>
 
 import dbus, dbus.glib
 try:
