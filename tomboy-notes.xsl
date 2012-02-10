@@ -91,7 +91,7 @@ version='1.0'>
 </xsl:template>
 
 <xsl:template match="tomboy:title">
-	<h1><xsl:value-of select="text()"/></h1>
+	<h1 name="{node()}" id="{node()}"><xsl:value-of select="text()"/></h1>
 </xsl:template>
 <xsl:template match="tomboy:bold">
 	<strong><xsl:apply-templates select="node()"/></strong>
@@ -141,7 +141,15 @@ version='1.0'>
 </xsl:template>
 
 <xsl:template match="link:url">
-<a style="color:#3465A4" href="{node()}"><xsl:value-of select="node()"/></a>
+	<xsl:choose>
+		<xsl:when test="contains(node(), '@')">
+			<a style="color:#3465A4" href="mailto:{node()}"><xsl:value-of select="node()"/></a>
+		</xsl:when>
+		<xsl:otherwise>
+			<a style="color:#3465A4" href="{node()}"><xsl:value-of select="node()"/></a>
+		</xsl:otherwise>
+	</xsl:choose>
+
 </xsl:template>
 
 <xsl:template match="tomboy:list">
