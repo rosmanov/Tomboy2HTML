@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 # Copyright (C) 2011 - Ruslan Osmanov <rrosmanov@gmail.com>
 # 
 # This program is free software; you can redistribute it and/or
