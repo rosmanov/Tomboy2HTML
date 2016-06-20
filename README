@@ -27,5 +27,3 @@ Generates all_notes.html in current directory.
 
 ./tomboy2html.py --xhtml --prefix="/tmp/all_notes"
 Generates /tmp/all_notes.xhtml and /tmp/all_notes.html files
-
-12 Feb 2011,  Ruslan Osmanov <rrosmanov@gmail.com>
