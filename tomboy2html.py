@@ -1,8 +1,9 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
+# type: ignore
 # Exports all Tomboy notes in XHTML/HTML file(s)
 # Note, xsltproc utility required
 #
-# Copyright (C) 2011-2016 - Ruslan Osmanov <rrosmanov@gmail.com>
+# Copyright (C) 2011-2025- Ruslan Osmanov <rrosmanov@gmail.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,7 +20,9 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 # See <http://www.gnu.org/licenses/>
 
-import dbus, dbus.glib
+from dbus.mainloop.glib import DBusGMainLoop
+import dbus
+
 try:
     import gobject
 except ImportError:
@@ -28,8 +31,14 @@ except ImportError:
 import os, sys, getopt, subprocess
 import re
 
+
+dbusLoop = DBusGMainLoop(set_as_default=True)
+
+
 def usage():
-    print """Usage: %(file)s [OPTIONS]
+    print(
+        f"Usage: {__file__} [OPTIONS]"
+        """
 
 OPTIONS
 -------
@@ -43,7 +52,9 @@ OPTIONS
 EXAMPLE
 -------
 Generates an HTML file for each note:
-%(file)s -m -p /path/to/directory/""" % { "file": __file__ }
+%(file)s -m -p /path/to/directory/
+        """
+    )
 
 
 def shellquote(s):
@@ -59,26 +70,27 @@ def generate_html(html_filename, xsl_filename, xhtml_filename, debug_mode=False)
                         "xsl": shellquote(xsl_filename),
                         "xhtml": shellquote(xhtml_filename)}
         if debug_mode:
-            print "Running %s" % cmd
+            print(f"Running {cmd}")
         rc = subprocess.call(cmd, shell=True)
         if rc != 0:
-            print >>sys.stderr, "xsltproc failed, rc: ", rc
+            print(f"xsltproc failed, rc: {rc}")
     except OSError as e:
         rc = 1
-        print >>sys.stderr, "Execution failed:", e
+        print(f"Execution failed: {e}")
     except:
-        print >>sys.stderr, "Unexpected error:", sys.exc_info()[0]
+        print("Unexpected error:", sys.exc_info()[0])
         raise
-        rc = 1;
+        rc = 1
     return rc
 
 
 def save_note(tomboy, n, f, debug = False):
     if (debug):
-        print "NOTE '", n, "'"
+        print(f"NOTE '{n}'")
+
     xml = re.sub(r'<\?xml[^<]*\?>', '', tomboy.GetNoteCompleteXml(n))
     xml = re.sub(r'\&\#x?.*\;', '', xml)
-    f.write(unicode(xml).encode("utf-8"))
+    f.write(xml)
 
 
 def write_note_header(f, xsl_filename):
@@ -110,8 +122,8 @@ def main(argv):
     # Save CLI options
     for o, a in opts:
         if o in ('-h', '--help'):
-            usage();
-            sys.exit();
+            usage()
+            sys.exit()
 
         elif o in ('-x', '--xhtml'):
             xhtml = True
@@ -128,8 +140,8 @@ def main(argv):
         elif o in ("-s", "--xsl"):
             xsl_filename = os.path.expanduser(a)
 
-    if False == os.path.exists(xsl_filename):
-        print "XSL file '", xsl_filename, "' doesn't exist"
+    if not os.path.exists(xsl_filename):
+        print(f"XSL file '{xsl_filename}' doesn't exist")
         sys.exit(2)
 
     # Access the Tomboy remote control interface
@@ -140,7 +152,7 @@ def main(argv):
     # Get note URIs
     all_notes = tomboy.ListAllNotes()
 
-    if multiple == False:
+    if not multiple:
         xhtml_filename = prefix + '.xhtml'
         html_filename = prefix + '.html'
 
@@ -152,9 +164,9 @@ def main(argv):
 
         write_note_bottom(f)
         f.close()
-        generate_html(html_filename, xsl_filename, xhtml_filename, debug_mode);
+        generate_html(html_filename, xsl_filename, xhtml_filename, debug_mode)
 
-        if xhtml == False:
+        if not xhtml:
             os.unlink(xhtml_filename)
     else:
         for n in all_notes:
@@ -163,19 +175,19 @@ def main(argv):
             html_filename = prefix + title +'.html'
 
             if debug_mode:
-                print "open(%s)" % xhtml_filename
+                print(f"open({xhtml_filename})")
             f = open(xhtml_filename, "w")
             write_note_header(f, xsl_filename)
             save_note(tomboy, n, f, debug_mode)
             write_note_bottom(f)
             f.close()
 
-            rc = generate_html(html_filename, xsl_filename, xhtml_filename, debug_mode);
+            rc = generate_html(html_filename, xsl_filename, xhtml_filename, debug_mode)
             if rc != 0:
-                print >>sys.stderr, "generate_html(%s, %s, %s) failed" \
-                        [html_filename, xsl_filename, xhtml_filename]
+                print(f"generate_html({html_filename}, {xsl_filename}, {xhtml_filename}) failed")
                 break
-            if xhtml == False:
+
+            if not xhtml:
                 os.unlink(xhtml_filename)
 
 if __name__ == "__main__":
