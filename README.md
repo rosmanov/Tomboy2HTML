@@ -12,9 +12,16 @@ Python script for use in CLI.
 
 XSL file to generate HTML file from XML content.
 
-### OPTIONS
+### USAGE
 
+1. Install the dependencies:
 ```
+pip install -r requirements.txt
+```
+2. Run the script:
+```
+./tomboy2html.py --help
+
 -h, --help          Display help
 -p, --prefix        Optional. Output filename prefix. Default: notes
 -x, --xhtml         Optional. Generate XHTML file also. Default: off 
@@ -22,13 +29,19 @@ XSL file to generate HTML file from XML content.
 -d, --debug         Optional. Debug mode. Default: off 
 ```
 
-### EXAMPLE
+### EXAMPLES
 
 ```
 ./tomboy2html.py -p "all_notes"
 ```
 
 Generates `all_notes.html` in the current directory.
+
+```
+./tomboy2html.py  --prefix note__ --multiple
+```
+
+Generates files `note__1.html`, `note__2.html`, etc. in the current directory.
 
 ```
 ./tomboy2html.py --xhtml --prefix="/tmp/all_notes"
