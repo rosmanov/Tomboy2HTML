@@ -14,11 +14,13 @@ XSL file to generate HTML file from XML content.
 
 ### OPTIONS
 
+```
 -h, --help          Display help
 -p, --prefix        Optional. Output filename prefix. Default: notes
 -x, --xhtml         Optional. Generate XHTML file also. Default: off 
 -s, --xsl           Optional. XSL for XML-HTML conversion. Default: tomboy-notes.xsl 
 -d, --debug         Optional. Debug mode. Default: off 
+```
 
 ### EXAMPLE
 
